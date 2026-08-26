@@ -1,8 +1,8 @@
 # 🏭 Warehouse Natural Language Query Assistant
 
-An AI-powered **Natural Language to SQL** assistant for warehouse capacity and inventory analytics.
+An AI-powered Natural Language to SQL assistant for warehouse capacity and inventory analytics.
 
-Users can ask warehouse-related questions in natural language, and the system uses **RAG + LLM + Text-to-SQL** to understand the question, generate a safe SQL query, execute it against the warehouse database, and return a clear natural-language answer.
+Users can ask warehouse-related questions in natural language, and the system uses LLM + lightweight schema retrieval + Text-to-SQL to understand the question, generate a safe SQL query, execute it against the warehouse database, and return a clear natural-language answer.
 
 ---
 
@@ -28,27 +28,25 @@ User Question
    FastAPI
      │
      ▼
-Schema RAG (ChromaDB)
+Schema Retrieval
      │
      │ Relevant schema + domain knowledge
      ▼
-     LLM
+    LLM
      │
      │ Generated SQL
      ▼
 SQL Safety Validation
      │
-     │ SELECT only
      ▼
 SQLite Warehouse Database
      │
      │ Query Result
      ▼
-     LLM
+    LLM
      │
-     │ Natural Language Answer
      ▼
-   User
+Natural Language Answer
 ```
 
 ---
@@ -59,11 +57,11 @@ SQLite Warehouse Database
 
 Example:
 
-> "Kaunse chamber me is month sabse zyada capacity used hui?"
+> "Whic chamber is used more capacity in this month"
 
 ### 2. RAG retrieves relevant context
 
-The system searches the ChromaDB vector store for relevant warehouse schema and domain knowledge.
+The system uses a lightweight schema retrieval layer to identify the most relevant warehouse tables, columns, business rules, and example SQL patterns based on keywords in the user's question.
 
 The retrieved context can include:
 
@@ -113,8 +111,7 @@ The query result is sent back to the LLM, which converts the raw database result
 | FastAPI                     | REST API                           |
 | SQLAlchemy                  | Database access                    |
 | SQLite                      | Warehouse database                 |
-| ChromaDB                    | Vector database                    |
-| Sentence Transformers       | Text embeddings                    |
+| Schema Retrieval              Relevant database schema and domain context|
 | LLM / OpenAI-compatible API | SQL generation & answer generation |
 | Pydantic                    | Data validation                    |
 | Uvicorn                     | ASGI server                        |
@@ -137,7 +134,6 @@ Warehouse_Nl_Query/
 │
 ├── data/
 │   ├── warehouse.db
-│   └── chroma_db/
 │
 ├── .env
 ├── .gitignore
@@ -231,8 +227,6 @@ OPENAI_API_KEY=your_api_key
 OPENAI_BASE_URL=https://api.openai.com/v1
 MODEL_NAME=gpt-4o-mini
 DATABASE_URL=sqlite:///./data/warehouse.db
-CHROMA_PATH=./data/chroma_db
-EMBEDDING_MODEL=all-MiniLM-L6-v2
 ```
 
 > Never commit your `.env` file or API keys to GitHub.
@@ -359,27 +353,23 @@ The database is automatically created during application startup.
 
 ---
 
-## 🔎 RAG Implementation
+## 🔎 Schema Retrieval
 
-The project uses **Retrieval-Augmented Generation (RAG)** to provide the LLM with relevant warehouse-specific context before generating SQL.
+The application uses a lightweight schema retrieval layer to provide
+warehouse-specific context to the LLM.
 
-The RAG pipeline consists of:
+The retrieval layer matches keywords from the user's question with
+relevant schema and domain-knowledge documents.
 
-```text
-Warehouse Schema & Domain Knowledge
-            ↓
-Sentence Transformer
-            ↓
-Vector Embeddings
-            ↓
-ChromaDB
-            ↓
-Similarity Search
-            ↓
-Relevant Context
-            ↓
+User Question
+      ↓
+Keyword Matching
+      ↓
+Relevant Schema + Business Rules
+      ↓
 LLM
-```
+      ↓
+Generated SQL
 
 Embedding model:
 
@@ -397,9 +387,10 @@ It combines:
 
 * Backend API development
 * Relational databases
-* Vector databases
-* Embeddings
-* Retrieval-Augmented Generation
+* Schema Retrieval
+  SQL safety
+  Backend API development
+  Relational databases
 * Large Language Models
 * Text-to-SQL
 * SQL security
