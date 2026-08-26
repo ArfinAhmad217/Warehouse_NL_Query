@@ -111,7 +111,7 @@ The query result is sent back to the LLM, which converts the raw database result
 | FastAPI                     | REST API                           |
 | SQLAlchemy                  | Database access                    |
 | SQLite                      | Warehouse database                 |
-| Schema Retrieval              Relevant database schema and domain context|
+| Schema Retrieval            | Relevant database schema and domain context|
 | LLM / OpenAI-compatible API | SQL generation & answer generation |
 | Pydantic                    | Data validation                    |
 | Uvicorn                     | ASGI server                        |
