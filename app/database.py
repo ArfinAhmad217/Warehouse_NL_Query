@@ -2,7 +2,10 @@ from sqlalchemy import create_engine, text, Column, Integer, String, Float, Date
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime, timedelta
 import random
+import os
 from app.config import settings
+
+os.makedirs("data", exist_ok=True)
 
 engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
