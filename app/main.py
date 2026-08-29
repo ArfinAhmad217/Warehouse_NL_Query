@@ -5,6 +5,7 @@ from app.database import init_db
 from contextlib import asynccontextmanager
 from openai import OpenAI
 from app.config import settings
+from app.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,6 +18,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+app.include_router(auth_router)
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY, base_url=settings.OPENAI_BASE_URL)
 

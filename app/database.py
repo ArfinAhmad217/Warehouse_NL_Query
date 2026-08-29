@@ -50,6 +50,16 @@ class CapacityLog(Base):
     utilization_pct = Column(Float)                 # (used/total)*100
 
     chamber = relationship("Chamber")
+    
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    username = Column(String(100), unique=True, nullable=False)
+    hashed_password = Column(String(255), nullable=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 # ====================== INIT + SEED ======================
 def init_db():

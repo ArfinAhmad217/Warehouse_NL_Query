@@ -9,3 +9,8 @@ class QueryResponse(BaseModel):
     generated_sql: str
     result: dict
     answer: Optional[str] = None
+    
+class RegisterRequest(BaseModel):
+    username: str
+    email: str
+    password: str
