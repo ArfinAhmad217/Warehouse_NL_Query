@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from app.auth import router as auth_router, get_current_user
 from app.models import QueryRequest, QueryResponse
 from app.sql_agent import generate_sql, is_safe_sql, execute_sql
 from app.database import init_db
@@ -38,7 +39,7 @@ Give a short, clear answer in simple Hindi + English mix (jaise user ne poocha).
     return resp.choices[0].message.content.strip()
 
 @app.post("/query", response_model=QueryResponse)
-def query_warehouse(req: QueryRequest):
+def query_warehouse(req: QueryRequest, current_user=Depends(get_current_user)):
     try:
         sql = generate_sql(req.question)
 
