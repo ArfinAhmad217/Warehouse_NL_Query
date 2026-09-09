@@ -6,7 +6,6 @@ from app.database import init_db
 from contextlib import asynccontextmanager
 from openai import OpenAI
 from app.config import settings
-from app.auth import router as auth_router
 from app.routers.chambers import router as chamber_router
 from app.routers.products import router as product_router
 from app.routers.inventory import router as inventory_router
