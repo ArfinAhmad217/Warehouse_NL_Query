@@ -70,5 +70,5 @@ def query_warehouse(req: QueryRequest, current_user=Depends(get_current_user)):
 def root():
     return {
         "message": "Warehouse Natural Language Query Assistant is running 🚀",
-        "example": "POST /query  →  {\"question\": \"kaunse chamber me is month sabse zyada capacity used hui?\"}"
+        "example": "POST /query  →  {\"question\": \"which chamber has the highest capacity utilization this month?\"}"
     }
