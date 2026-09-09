@@ -7,6 +7,10 @@ from contextlib import asynccontextmanager
 from openai import OpenAI
 from app.config import settings
 from app.auth import router as auth_router
+from app.routers.chambers import router as chamber_router
+from app.routers.products import router as product_router
+from app.routers.inventory import router as inventory_router
+from app.routers.capacity import router as capacity_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,6 +25,10 @@ app = FastAPI(
 )
 
 app.include_router(auth_router)
+app.include_router(chamber_router)
+app.include_router(product_router)
+app.include_router(inventory_router)
+app.include_router(capacity_router)
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY, base_url=settings.OPENAI_BASE_URL)
 

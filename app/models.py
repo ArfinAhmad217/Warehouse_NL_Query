@@ -18,3 +18,13 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+    
+class ChamberResponse(BaseModel):
+    id: int
+    name: str
+    location: str
+    total_capacity_cbm: float
+    is_active: bool
+
+    class Config:
+        from_attributes = True
